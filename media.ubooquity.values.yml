@@ -1,0 +1,37 @@
+replicaCount: 1
+
+image:
+  repository: linuxserver/ubooquity
+  tag: arm32v7-latest # ARM image
+  pullPolicy: IfNotPresent
+
+env:
+  - name: PUID
+    value: "1000"
+  - name: PGID
+    value: "1000"
+
+service:
+  type: ClusterIP
+  port: 80
+
+volumes:
+  - name: media-ssd
+    persistentVolumeClaim:
+      claimName: "media-ssd" 
+  - name: hdd-ssd
+    persistentVolumeClaim:
+      claimName: "hdd-ssd"
+
+volumeMounts:
+  - name: media-ssd
+    mountPath: "/config"
+    subPath: "configs/ubooquity" 
+  - name: hdd-ssd
+    mountPath: "/books"
+    subPath: books
+  - name: hdd-ssd
+    mountPath: "/comics"
+    subPath: comics
+
+

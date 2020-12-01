@@ -1,0 +1,31 @@
+replicaCount: 1
+
+image:
+  repository: linuxserver/ombi
+  tag: latest
+  pullPolicy: IfNotPresent
+
+env:
+  - name: PUID
+    value: "1000"
+  - name: PGID
+    value: "1000"
+  - name: "TZ"
+    value: "Europe/Paris"
+  - name: "BASE_URL"
+    value: "/ombi"
+
+service:
+  type: ClusterIP
+  port: 80
+
+volumes:
+  - name: media-ssd
+    persistentVolumeClaim:
+      claimName: "media-ssd"
+
+volumeMounts:
+  - name: media-ssd
+    mountPath: "/config"
+    subPath: "configs/ombi"
+

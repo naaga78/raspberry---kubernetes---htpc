@@ -1,0 +1,41 @@
+replicaCount: 1
+
+image:
+  repository: "linuxserver/radarr"
+  tag: "arm32v7-latest" # ARM image
+  pullPolicy: IfNotPresent
+
+env:
+  - name: PUID
+    value: "1000"
+  - name: PGID
+    value: "1000"
+
+service:
+  type: ClusterIP
+  port: 80
+
+volumes:
+  - name: "media-ssd"
+    persistentVolumeClaim:
+      claimName:  "media-ssd"
+  - name: hdd-ssd
+    persistentVolumeClaim:
+      claimName: "hdd-ssd"
+  - name: hdd-ext
+    persistentVolumeClaim:
+      claimName: "hdd-ext" 
+
+volumeMounts:
+  - name: "media-ssd"
+    mountPath: "/config"
+    subPath: "configs/radarr"
+  - name: "hdd-ext"
+    mountPath: "/downloads/transmission"
+    subPath: "downloads/transmission" 
+  - name: hdd-ssd
+    mountPath: "/Films"
+    subPath: Films
+  - name: hdd-ssd
+    mountPath: "/Films2"
+    subPath: Films2

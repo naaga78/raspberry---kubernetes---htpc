@@ -1,0 +1,51 @@
+replicaCount: 1
+
+image:
+  repository: linuxserver/sonarr
+  tag: arm32v7-latest # ARM image
+  pullPolicy: IfNotPresent
+
+env:
+  - name: PUID
+    value: "1000"
+  - name: PGID
+    value: "1000"
+
+service:
+  type: ClusterIP
+  port: 80
+
+volumes:
+  - name: media-ssd
+    persistentVolumeClaim:
+      claimName: "media-ssd" 
+  - name: hdd-ssd
+    persistentVolumeClaim:
+      claimName: "hdd-ssd"
+  - name: hdd-ext
+    persistentVolumeClaim:
+      claimName: "hdd-ext" 
+
+volumeMounts:
+  - name: media-ssd
+    mountPath: "/config"
+    subPath: "configs/sonarr" 
+  - name: hdd-ext
+    mountPath: "/downloads/transmission"
+    subPath: "downloads/transmission"
+  - name: hdd-ssd
+    mountPath: "/Series"
+    subPath: Series
+  - name: hdd-ssd
+    mountPath: "/Series2"
+    subPath: Series2
+  - name: hdd-ssd
+    mountPath: "/animes"
+    subPath: animes
+  - name: hdd-ssd
+    mountPath: "/documentaires"
+    subPath: documentaires
+  - name: hdd-ssd
+    mountPath: "/Mini-series"
+    subPath: Mini-series
+
